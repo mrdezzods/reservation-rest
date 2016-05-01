@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.Set;
@@ -36,9 +35,11 @@ public class ReservationsController {
     }
 
     /**
-     * Add a reservation
-     *
-     * @return
+     * @api {post} /reservations Creates a reservation
+     * @apiName CreateReservation
+     * @apiGroup Reservation
+     * @apiSuccess Status Returns empty response with status 200 on success.
+     * @apiError Status  HTTP UNPROCESSABLE ENTITY
      */
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> putReservtion(@Valid Reservation reservation, BindingResult bindingResult) {
@@ -53,12 +54,24 @@ public class ReservationsController {
         return new ResponseEntity<String>(HttpStatus.OK);
     }
 
+    /**
+     * @api {patch} /reservations/{id} Updates the reservation with given id : (only setting active/inactive)
+     * @apiName UpdateReservation
+     * @apiGroup Reservation
+     * @apiSuccess Status: 200 , Returns empty response with status 200 on success.
+     */
     @RequestMapping(method = RequestMethod.PATCH, value = "{id}")
-    public String updateReservation(@PathVariable String id) {
-
-        return "";
+    public ResponseEntity<String> updateReservation(@PathVariable Integer id) {
+        facade.acceptReservation(id);
+        return new ResponseEntity<String>(HttpStatus.OK);
     }
 
+    /**
+     * @api {delete} /reservations/{id} Deletes the reservation with given id
+     * @apiName DeleteReservation
+     * @apiGroup Reservation
+     * @apiSuccess Status: 200 , Returns empty response with status 200 on success.
+     */
     @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
     public ResponseEntity<String> deleteReservation(@PathVariable Integer id) {
         facade.deleteReservation(id);
