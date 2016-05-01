@@ -29,6 +29,17 @@ public class ReservationsController {
      * @apiGroup Reservation
      * @apiSuccess {java.util.List} Reservation All reservations in system
      */
+    @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Reservation getReservation(@PathVariable Integer id) {
+        return facade.getReservation(id);
+    }
+
+    /**
+     * @api {get} /reservations/{id} Returns a reservation with given id
+     * @apiName GetReservations
+     * @apiGroup Reservation
+     * @apiSuccess {Reservation} Reservation Given reservation
+     */
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Set<Reservation> getReservations() {
         return facade.getAllReservations();
@@ -43,8 +54,6 @@ public class ReservationsController {
      */
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> putReservtion(@Valid Reservation reservation, BindingResult bindingResult) {
-        reservation.setRestaurant(null);
-
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<String>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -67,14 +76,14 @@ public class ReservationsController {
     }
 
     /**
-     * @api {delete} /reservations/{id} Deletes the reservation with given id
+     * @api {delete} /reservations/{id}/delete Deletes the reservation with given id
      * @apiName DeleteReservation
      * @apiGroup Reservation
      * @apiSuccess Status: 200 , Returns empty response with status 200 on success.
      */
-    @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
-    public ResponseEntity<String> deleteReservation(@PathVariable Integer id) {
-        facade.deleteReservation(id);
+    @RequestMapping(method = RequestMethod.POST, value = "{reservation_id}/delete")
+    public ResponseEntity<String> deleteReservation(@PathVariable Integer reservation_id) {
+        facade.deleteReservation(reservation_id);
 
         return new ResponseEntity<String>(HttpStatus.OK);
     }
