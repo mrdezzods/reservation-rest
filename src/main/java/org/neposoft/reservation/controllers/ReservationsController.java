@@ -24,7 +24,7 @@ public class ReservationsController {
     protected AppFacade facade;
 
     /**
-     * @api {get} /reservations Returns all restaurants
+     * @api {get} /reservations/{id} Returns a reservation with given id
      * @apiName GetReservations
      * @apiGroup Reservation
      * @apiSuccess {java.util.List} Reservation All reservations in system
@@ -35,7 +35,7 @@ public class ReservationsController {
     }
 
     /**
-     * @api {get} /reservations/{id} Returns a reservation with given id
+     * @api {get} /reservations Returns all restaurants
      * @apiName GetReservations
      * @apiGroup Reservation
      * @apiSuccess {Reservation} Reservation Given reservation
